@@ -101,7 +101,7 @@ func parsDateRQ(w http.ResponseWriter, r *http.Request) (*time.Time, *time.Time,
 
 	q := r.URL.Query()
 
-	from, err := time.Parse("2006-01-02", q.Get("from"))
+	from, err := time.Parse(time.RFC3339, q.Get("from"))
 	if err != nil {
 		txt := "Bad Request: from"
 		w.WriteHeader(http.StatusBadRequest)
@@ -110,7 +110,7 @@ func parsDateRQ(w http.ResponseWriter, r *http.Request) (*time.Time, *time.Time,
 		return nil, nil, errors.New(txt)
 	}
 
-	to, err := time.Parse("2006-01-02", q.Get("to"))
+	to, err := time.Parse(time.RFC3339, q.Get("to"))
 	if err != nil {
 		txt := "Bad Request: to"
 		w.WriteHeader(http.StatusBadRequest)
