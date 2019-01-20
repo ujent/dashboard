@@ -22,7 +22,7 @@ Vue.locale('en', enLocale);
 
 const store = new Vuex.Store({
   state: {
-    isAuthenticated: false,
+    isAuthenticated: !!localStorage.getItem('dashboard_auth'),
     dashboard: {
       statsCards: [],
       usersChartData: {
@@ -74,7 +74,7 @@ const store = new Vuex.Store({
     login(state) {
       state.isAuthenticated = true;
     },
-    logout() {
+    logout(state) {
       state.isAuthenticated = false;
     },
     setDashboardStats(state, statsCards) {
@@ -99,10 +99,19 @@ const store = new Vuex.Store({
         api.login(payload).then(
           () => {
             context.commit('login');
+            localStorage.setItem('dashboard_auth', true);
             resolve();
           },
           err => reject(err)
         );
+      });
+    },
+
+    logout(context) {
+      return new Promise((resolve, reject) => {
+        context.commit('logout');
+        localStorage.setItem('dashboard_auth', false);
+        resolve();
       });
     },
 
