@@ -17,10 +17,7 @@
             <p>Stats</p>
           </a>
         </li>
-        <drop-down class="nav-item"
-                   title="5 Notifications"
-                   title-classes="nav-link"
-                   icon="ti-bell">
+        <drop-down class="nav-item" title="5 Notifications" title-classes="nav-link" icon="ti-bell">
           <a class="dropdown-item">Notification 1</a>
           <a class="dropdown-item">Notification 2</a>
           <a class="dropdown-item">Notification 3</a>
@@ -33,15 +30,19 @@
             <p>Settings</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" v-on:click="signOut">
+            <i class="ti-shift-right"></i>
+            <p>Sign out</p>
+          </a>
+        </li>
         <li class="divider"></li>
       </mobile-menu>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content @click.native="toggleSidebar">
-
-      </dashboard-content>
+      <dashboard-content @click.native="toggleSidebar"></dashboard-content>
 
       <content-footer></content-footer>
     </div>
@@ -62,6 +63,11 @@ export default {
     MobileMenu
   },
   methods: {
+    signOut: function(e) {
+      e.preventDefault();
+
+      this.$store.dispatch("logout").then(() => this.$router.push("/login"));
+    },
     toggleSidebar() {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);

@@ -161,4 +161,10 @@ export default {
 .dashboard-datepicker {
   float: right;
 }
+
+@media all and (max-width: 480px) {
+  .el-date-editor--daterange.el-input__inner {
+    width: 100% !important;
+  }
+}
 </style>

@@ -29,5 +29,13 @@ export default {};
     font-size: 1.1rem;
   }
 }
+
+@media all and (max-width: 480px) {
+  .logo {
+    & {
+      margin-top: 36px;
+    }
+  }
+}
 </style>
 

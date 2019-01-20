@@ -223,4 +223,57 @@ export default {
     }
   }
 }
+
+@media all and (max-width: 480px) {
+  .login-page {
+    display: block;
+  }
+
+  .login-page-aside {
+    height: 320px;
+    padding-top: 120px;
+    background-image: url("../assets/img/login-background-mobile.svg");
+    background-repeat: no-repeat;
+    background-color: #fcf3e4;
+  }
+
+  .login-page-plant-1,
+  .login-page-plant-2 {
+    display: none;
+  }
+
+  .login-page-main {
+    .login-page-sign-up {
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .login-form {
+      & {
+        margin: 60px 0 0 0;
+        max-width: unset;
+        min-width: unset;
+      }
+
+      .login-form-header h1 {
+        font-weight: bold;
+      }
+
+      .login-button {
+        width: 100%;
+        height: 52px;
+        font-size: 1.6rem;
+      }
+
+      .show-password-button {
+        font-size: 1rem;
+        top: 90px;
+      }
+
+      label {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
 </style>
