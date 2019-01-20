@@ -8,23 +8,27 @@
         Don't have an account?
         <a href="#">Sign up</a>
       </div>
-      <div class="login-form">
+      <div class="login-form" v-on:keypress="handleKeyPress">
         <header class="login-form-header">
           <img class="login-page-plant-1" src="@/assets/img/plants-left.svg" alt="plant">
           <h1>Sign in to DataCue</h1>
         </header>
+        <div class="login-error" v-text="error"></div>
         <div>
           <label for="emailInput">Email</label>
-          <input id="emailInput" type="text">
+          <input id="emailInput" v-model="email" type="email">
         </div>
-        <div>
+        <div class="password-section">
           <label for="passwordInput">Password</label>
-          <input id="passwordInput" type="text">
           
-          <span>Show password</span>
+          <input id="passwordInput" v-model="password" :type="showPassword ? 'text' : 'password'">
+          
+          <span
+            class="show-password-button"
+            v-on:click="toggleShowPassword"
+          >👁&nbsp;&nbsp;Show password</span>
         </div>
-
-        <button class="login-button">Login</button>
+        <button class="login-button" v-on:click="login" :disabled="!email || !password">Login</button>
         
         <img class="login-page-plant-2" src="@/assets/img/plants-right.svg" alt="plant">
       </div>
@@ -40,6 +44,51 @@ export default {
   components: {
     "login-logo": LoginLogo,
     "login-background": LoginBackground
+  },
+
+  methods: {
+    toggleShowPassword: function(e) {
+      this.showPassword = !this.showPassword;
+    },
+
+    handleKeyPress: function(e) {
+      this.error = "";
+      if (e.key === "Enter" && this.email && this.password) {
+        this.login();
+      }
+    },
+
+    login: function() {
+      this.error = "";
+
+      this.$store
+        .dispatch("login", {
+          email: this.email,
+          password: this.password
+        })
+        .then(
+          () => {
+            this.$router.push("/");
+          },
+          err => {
+            if (err.status == 500) {
+              this.error = "Internal Server Error";
+            } else {
+              this.error = "Invalid credentials";
+            }
+          }
+        );
+    }
+  },
+
+  data() {
+    return {
+      email: "",
+      password: "",
+      date: "",
+      error: "",
+      showPassword: ""
+    };
   }
 };
 </script>
@@ -50,16 +99,26 @@ export default {
   height: 100vh;
 }
 .login-page-aside {
-  flex: 1 0 auto;
+  min-width: 320px;
+  flex: 0 1 640px;
   background-image: url("../assets/img/login-background.svg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+  background-color: #fcf3e4;
 }
 
 .login-page-main {
   & {
     flex: 1 0 auto;
     padding: 1.2em;
+  }
+
+  a {
+    color: #fdb80a;
+  }
+
+  a:hover {
+    color: darkgray;
   }
 
   .login-page-sign-up {
@@ -71,6 +130,12 @@ export default {
       max-width: 600px;
       min-width: 450px;
       margin: 180px auto 0 auto;
+    }
+
+    .login-error {
+      color: red;
+      text-align: right;
+      height: 21px;
     }
 
     .login-form-header {
@@ -94,6 +159,7 @@ export default {
     }
 
     .login-page-plant-2 {
+      margin-top: 16px;
       float: right;
     }
 
@@ -105,6 +171,33 @@ export default {
       border-radius: 6px;
       background-color: #f7f7f7;
       border: #e6e7e9 1px solid;
+      padding: 0 12px;
+    }
+
+    input:focus {
+      background-color: #ffffff;
+      border-color: #fdb80a;
+    }
+
+    .password-section {
+      margin-top: 32px;
+      position: relative;
+    }
+
+    .show-password-icon {
+      margin-top: 2px;
+      margin-right: 8px;
+    }
+
+    .show-password-button {
+      position: absolute;
+      right: 0;
+      top: 2px;
+      cursor: pointer;
+    }
+
+    .show-password-button:hover {
+      color: #fdb80a;
     }
 
     button {
@@ -116,6 +209,17 @@ export default {
       min-width: 132px;
       height: 46px;
       margin-top: 70px;
+    }
+
+    button:hover {
+      background-color: darkgray;
+      border-color: darkgray;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      background-color: #e6e7e9;
+      border-color: #e6e7e9;
     }
   }
 }

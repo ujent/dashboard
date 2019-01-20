@@ -13,6 +13,13 @@ export function getDashboardActivityChart(from, to) {
   return fetchApi('/api/dashboard/activitychart' + q);
 }
 
+export function login(payload) {
+  return fetchApi('/api/login', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}
+
 function fetchApi(url, options = {}) {
   const defaulOptions = {
     /*credentials: 'include'*/

@@ -1,12 +1,84 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import routes from "./routes";
-Vue.use(VueRouter);
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-// configure router
-const router = new VueRouter({
-  routes, // short for routes: routes
-  linkActiveClass: "active"
-});
+import DashboardLayout from '@/layout/dashboard/DashboardLayout.vue';
+// GeneralViews
+import NotFound from '@/pages/NotFoundPage.vue';
 
-export default router;
+// Admin pages
+import Dashboard from '@/pages/Dashboard.vue';
+import UserProfile from '@/pages/UserProfile.vue';
+import Notifications from '@/pages/Notifications.vue';
+import Icons from '@/pages/Icons.vue';
+import Maps from '@/pages/Maps.vue';
+import Typography from '@/pages/Typography.vue';
+import TableList from '@/pages/TableList.vue';
+import Login from '@/pages/Login.vue';
+
+export default function createRouter(store) {
+  function requireAuth(to, from, next) {
+    if (store.state.isAuthenticated) {
+      next();
+    } else {
+      next('/login');
+    }
+  }
+
+  const routes = [
+    {
+      path: '/',
+      beforeEnter: requireAuth,
+      component: DashboardLayout,
+      redirect: '/dashboard',
+      children: [
+        {
+          path: 'dashboard',
+          name: 'dashboard',
+          component: Dashboard
+        },
+        {
+          path: 'stats',
+          name: 'stats',
+          component: UserProfile
+        },
+        {
+          path: 'notifications',
+          name: 'notifications',
+          component: Notifications
+        },
+        {
+          path: 'icons',
+          name: 'icons',
+          component: Icons
+        },
+        {
+          path: 'maps',
+          name: 'maps',
+          component: Maps
+        },
+        {
+          path: 'typography',
+          name: 'typography',
+          component: Typography
+        },
+        {
+          path: 'table-list',
+          name: 'table-list',
+          component: TableList
+        }
+      ]
+    },
+    { path: '/login', component: Login },
+    { path: '*', component: NotFound }
+  ];
+
+  Vue.use(VueRouter);
+
+  // configure router
+  const router = new VueRouter({
+    routes, // short for routes: routes
+    linkActiveClass: 'active'
+  });
+
+  return router;
+}

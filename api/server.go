@@ -50,6 +50,7 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	//{ "email": "john@smith.com","password":}
 	if req.Email == "john@smith.com" && req.Password == "mypassword" {
 		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("\"ok\""))
 	} else {
 		w.WriteHeader(http.StatusForbidden)
 	}

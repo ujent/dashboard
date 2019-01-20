@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import Vuex from 'vuex';
 import App from './App';
-import router from './router/index';
+import createRouter from './router/index';
 
 import * as api from './api';
 
@@ -95,21 +95,15 @@ const store = new Vuex.Store({
 
   actions: {
     login(context, payload) {
-      fetch('/api/login', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      }).then(
-        response => {
-          if (response.ok) {
+      return new Promise((resolve, reject) => {
+        api.login(payload).then(
+          () => {
             context.commit('login');
-          } else {
-            console.log('login failed with status:', response.status);
-          }
-        },
-        err => {
-          console.log(err);
-        }
-      );
+            resolve();
+          },
+          err => reject(err)
+        );
+      });
     },
 
     refreshDashboard(context, payload) {
@@ -126,6 +120,8 @@ const store = new Vuex.Store({
     }
   }
 });
+
+const router = createRouter(store);
 
 /* eslint-disable no-new */
 new Vue({

@@ -14,7 +14,7 @@ export default {};
   & {
     width: 240px;
     margin: 0 auto;
-    margin-top: 240px;
+    margin-top: 50%;
   }
 
   .logo-img {
