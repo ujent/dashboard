@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/json"
@@ -13,13 +13,13 @@ import (
 
 const dashboardRoute = "/api/dashboard"
 
-type server struct {
-	http   *http.Server
+type Server struct {
+	Http   *http.Server
 	logger *log.Logger
 }
 
-func newServer(logger *log.Logger) *server {
-	s := server{logger: logger}
+func New(logger *log.Logger) *Server {
+	s := Server{logger: logger}
 	router := http.NewServeMux()
 
 	router.HandleFunc("/api/login", s.handleLogin)
@@ -27,11 +27,11 @@ func newServer(logger *log.Logger) *server {
 	router.HandleFunc("/api/dashboard/userchart", s.handleDashboardUserChart)
 	router.HandleFunc("/api/dashboard/activitychart", s.handleDashboardActivityChart)
 
-	s.http = &http.Server{Handler: s.loggingMiddleware(router.ServeHTTP)}
+	s.Http = &http.Server{Handler: s.loggingMiddleware(router.ServeHTTP)}
 	return &s
 }
 
-func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -47,7 +47,6 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	req := LoginRQ{}
 	json.Unmarshal(body, &req)
 
-	//{ "email": "john@smith.com","password":}
 	if req.Email == "john@smith.com" && req.Password == "mypassword" {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("\"ok\""))
@@ -56,9 +55,7 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// api/dashboard/stats/?from=2018-12-01&to=2018-12-31
-
-func (s *server) handleDashboardStats(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleDashboardStats(w http.ResponseWriter, r *http.Request) {
 
 	from, to, err := parsDateRQ(w, r)
 	if err != nil {
@@ -69,7 +66,7 @@ func (s *server) handleDashboardStats(w http.ResponseWriter, r *http.Request) {
 	s.writeJSON(w, http.StatusOK, &StatsRS{Stats: cards})
 }
 
-func (s *server) handleDashboardUserChart(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleDashboardUserChart(w http.ResponseWriter, r *http.Request) {
 
 	from, to, err := parsDateRQ(w, r)
 	if err != nil {
@@ -80,7 +77,7 @@ func (s *server) handleDashboardUserChart(w http.ResponseWriter, r *http.Request
 	s.writeJSON(w, http.StatusOK, &UserChartRS{Series: userChart})
 }
 
-func (s *server) handleDashboardActivityChart(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handleDashboardActivityChart(w http.ResponseWriter, r *http.Request) {
 
 	from, to, err := parsDateRQ(w, r)
 	if err != nil {
@@ -123,7 +120,7 @@ func parsDateRQ(w http.ResponseWriter, r *http.Request) (*time.Time, *time.Time,
 	return &from, &to, nil
 }
 
-func (s *server) loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
+func (s *Server) loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		s.logger.Printf("%s %s %s", r.Method, r.URL.Path, r.RemoteAddr)
 		next(w, r)
@@ -131,7 +128,7 @@ func (s *server) loggingMiddleware(next http.HandlerFunc) http.HandlerFunc {
 
 }
 
-func (s *server) writeJSON(w http.ResponseWriter, statusCode int, payload interface{}) {
+func (s *Server) writeJSON(w http.ResponseWriter, statusCode int, payload interface{}) {
 
 	json, err := json.Marshal(payload)
 	if err != nil {

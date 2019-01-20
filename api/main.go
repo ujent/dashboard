@@ -10,13 +10,15 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/ujent/dashboard/api/server"
 )
 
 func main() {
 
 	logger := log.New(os.Stdout, "api: ", log.LstdFlags)
 
-	s := newServer(logger)
+	s := server.New(logger)
 
 	addr, ok := os.LookupEnv("API_ADDR")
 	if !ok {
@@ -56,7 +58,7 @@ func main() {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(graceTimeout)*time.Second)
 		defer cancel()
 
-		if err := s.http.Shutdown(ctx); err != nil {
+		if err := s.Http.Shutdown(ctx); err != nil {
 			logger.Fatalf("Unable to gracefully shutdown server. Error: %v", err)
 		}
 
@@ -66,7 +68,7 @@ func main() {
 
 	logger.Printf("Server listening on address %s", addr)
 
-	if err := s.http.Serve(l); err != nil && err != http.ErrServerClosed {
+	if err := s.Http.Serve(l); err != nil && err != http.ErrServerClosed {
 		logger.Fatal(err)
 	}
 

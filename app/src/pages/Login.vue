@@ -16,7 +16,7 @@
         <div class="login-error" v-text="error"></div>
         <div>
           <label for="emailInput">Email</label>
-          <input id="emailInput" v-model="email" type="email">
+          <input id="emailInput" v-model="email" v-focus type="email">
         </div>
         <div class="password-section">
           <label for="passwordInput">Password</label>
@@ -46,6 +46,15 @@ export default {
     "login-background": LoginBackground
   },
 
+  directives: {
+    focus: {
+      // directive definition
+      inserted: function(el) {
+        el.focus();
+      }
+    }
+  },
+
   methods: {
     toggleShowPassword: function(e) {
       this.showPassword = !this.showPassword;
@@ -63,8 +72,8 @@ export default {
 
       this.$store
         .dispatch("login", {
-          email: this.email,
-          password: this.password
+          email: this.email.trim(),
+          password: this.password.trim()
         })
         .then(
           () => {
@@ -218,8 +227,7 @@ export default {
     }
 
     button:disabled {
-      background-color: #e6e7e9;
-      border-color: #e6e7e9;
+      opacity: 0.6;
     }
   }
 }
