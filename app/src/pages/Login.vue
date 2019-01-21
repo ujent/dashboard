@@ -232,7 +232,7 @@ export default {
   }
 }
 
-@media all and (max-width: 480px) {
+@media all and (max-width: 768px) {
   .login-page {
     display: block;
   }

@@ -1,1 +1,6 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320"><defs><style>.cls-1{fill:#fcf3e4;}.cls-2{fill:#f8d188;}.cls-3{fill:#f6ada4;}.cls-4{fill:#c0d4cc;}</style></defs><title>background-with-squares</title><rect class="cls-1" width="320" height="320"/><rect class="cls-2" x="32" y="85" width="40" height="40" rx="5.67"/><rect class="cls-3" x="243" y="40" width="50" height="50" rx="7.78"/><rect class="cls-4" x="143.5" y="55" width="35" height="35" rx="5.53"/></svg>
+<svg width="768" height="320" viewBox="0 0 768 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M768 0H0V320H768V0Z" fill="#FCF3E4"/>
+<path d="M159.392 85H90.608C83.0925 85 77 91.0925 77 98.608V167.392C77 174.908 83.0925 181 90.608 181H159.392C166.908 181 173 174.908 173 167.392V98.608C173 91.0925 166.908 85 159.392 85Z" fill="#F8D188"/>
+<path d="M684.328 40H601.672C591.36 40 583 48.2901 583 58.5164V140.484C583 150.71 591.36 159 601.672 159H684.328C694.64 159 703 150.71 703 140.484V58.5164C703 48.2901 694.64 40 684.328 40Z" fill="#F6ADA4"/>
+<path d="M414.728 55H357.272C349.942 55 344 60.9421 344 68.272V125.728C344 133.058 349.942 139 357.272 139H414.728C422.058 139 428 133.058 428 125.728V68.272C428 60.9421 422.058 55 414.728 55Z" fill="#C0D4CC"/>
+</svg>
